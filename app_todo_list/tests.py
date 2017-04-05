@@ -27,6 +27,15 @@ class TaskTest(TestCase):
         # assert
         self.assertEquals(200,response.status_code)
         
+        
+    def test_check_url(self):
+        #arrange
+        client = Client()
+        #act
+        response = client.get('/check-task')
+        #assert
+        self.assertEquals(302,response.status_code)
+        
     def test_show_task(self):
         #arrange
         task = Task(text="lavar el auto")
@@ -65,3 +74,15 @@ class TaskTest(TestCase):
         self.assertNotEquals(initial_state,final_state)
         self.assertEquals(initial_state,0)
         self.assertEquals(final_state,1)
+        
+    def test_check_task(self):
+        #arrange
+        client = Client()
+        #act
+        client.post('/submit-task',  {'text' : "pasear al perro"})
+        t_id =  Task.objects.all().last().id
+        client.post('/check-task', {'id' : t_id })
+        task2 = client.get('/showtask')
+        
+        #assert
+        self.assertContains(task2,"<td>&rarr; pasear al perro </td><td>1 </td>")
