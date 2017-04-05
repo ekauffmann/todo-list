@@ -12,3 +12,11 @@ def submitTask(request):
         task = Task(text=text)
         task.save()
     return redirect('/showtask')
+    
+def checkTask(request):
+    if request.method == "POST":
+        id = request.POST.get('id', 0)
+        task = Task.objects.get(pk = id)
+        Task.objects.filter(pk = id).update(state = 1)
+        task.refresh_from_db()
+    return redirect('/showtask')

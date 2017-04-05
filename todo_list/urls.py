@@ -21,6 +21,7 @@ from app_todo_list import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^showtask$', views.showTaskView),
-    url(r'^submit-task$', views.submitTask)
+    url(r'^submit-task$', views.submitTask),
+    url(r'^check-task$', views.checkTask)
 
 ]

@@ -10,12 +10,23 @@
             <input type="submit" value="Crear"/>
         </form>
         <table>
-            <th>
-                <td>Tarea</td>
-            </th>
+            <tr>
+                <th style="text-align=center;">Tarea</th><th> Status </th><th> </th>
+            </tr>
             {% for task in tasks %}
             <tr>
-                <td>&rarr; {{ task.text }}</td>
+                <td>&rarr; {{ task.text}} </td><td>{{ task.state }} </td>
+                {% if task.state != 1 %}
+                <td>
+                    <form action="/check-task" method="POST"> {% csrf_token %}
+                        <input type = "hidden" name="id" value="{{ task.pk }}"/>
+                        <input type="submit" value="Check"/>
+    
+                    </form>
+                </td>
+                {% else %}
+                    <td> </td>    
+                {% endif %}
             </tr>
             {% endfor %}
         </table>

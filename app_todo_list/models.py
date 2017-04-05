@@ -8,3 +8,4 @@ class Task(models.Model):
     text = models.TextField()
     state = models.IntegerField(default=0)
     
+    
