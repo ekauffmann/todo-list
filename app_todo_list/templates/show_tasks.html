@@ -20,13 +20,27 @@
                 <td>
                     <form action="/check-task" method="POST"> {% csrf_token %}
                         <input type = "hidden" name="id" value="{{ task.pk }}"/>
-                        <input type="submit" value="Check"/>
+                        <input type="submit" value="Completar"/>
     
                     </form>
                 </td>
                 {% else %}
                     <td> </td>    
                 {% endif %}
+                <td>
+                    <form action="/edit-task" method="POST"> {% csrf_token %}
+                    <input type="text" name="text"/>
+                    <input type = "hidden" name="id" value="{{ task.pk }}"/>
+                    <input type="submit" value="Editar"/>
+        </form>
+                </td>
+                  <td>
+                    <form action="/delete-task" method="POST"> {% csrf_token %}
+                        <input type = "hidden" name="id" value="{{ task.pk }}"/>
+                        <input type="submit" value="Borrar"/>
+    
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>

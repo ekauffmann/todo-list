@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^showtask$', views.showTaskView),
     url(r'^submit-task$', views.submitTask),
-    url(r'^check-task$', views.checkTask)
-
+    url(r'^check-task$', views.checkTask),
+    url(r'^edit-task$', views.editTask),
+    url(r'^delete-task$', views.deleteTask)
 ]
