@@ -158,3 +158,28 @@ class TaskTest(TestCase):
         task2 = client.get('/showtask')
         #assert
         self.assertContains(task2,"<td>&rarr; lavar y secar al perro </td>")
+        
+    def test_keep_priority(self):
+        #arrange
+        task_1 = Task(text="Lavar al perro")
+        task_2 = Task(text="Centrifugar al perro")
+        task_3 = Task(text="Colgar al perro")
+        task_4 = Task(text="PlancharPlanchar al perro")
+        task_1.save()
+        task_2.save()
+        task_3.save()
+        task_4.save()
+        #act
+        task_1.delete() # c:
+        task_2 = Task.objects.filter(pk=task_2.pk)[0]
+        task_3 = Task.objects.filter(pk=task_3.pk)[0]
+        task_4 = Task.objects.filter(pk=task_4.pk)[0]
+        
+        
+        #assert
+         
+        
+        self.assertEquals(1, task_2.priority)
+        self.assertEquals(2, task_3.priority)
+        self.assertEquals(3, task_4.priority)
+        
