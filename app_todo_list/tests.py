@@ -27,7 +27,22 @@ class TaskTest(TestCase):
         # assert
         self.assertEquals(200,response.status_code)
         
+    def test_edit_url(self):
+        #arrange
+        client = Client()
+        #act
+        response = client.get('/edit-task')
+        #assert
+        self.assertEquals(302,response.status_code)
         
+    def test_delete_url(self):
+        #arrange
+        client = Client()
+        #act
+        response = client.get('/delete-task')
+        #assert
+        self.assertEquals(302,response.status_code)
+    
     def test_check_url(self):
         #arrange
         client = Client()
@@ -110,4 +125,36 @@ class TaskTest(TestCase):
         #assert
         self.assertContains(response, "pos: 1")
         
+    def test_delete_task(self):
+        #arrange
+        task = Task(text="lavar al perro")
+        task.save()
+        task2 = Task.objects.all().last()
+        t_id = task2.id
+        #act
+        task2.delete()
+        #assert
+        self.assertFalse(Task.objects.all().filter(id=t_id).exists())
+    
+    def test_edit_task(self):
+        #arrange
+        task = Task(text = "lavar al perro")
+        task.save()
+        task2 = Task.objects.all().last()
+        t_id = task2.id
+        #act
+        task2.text="lavar al perro y secarlo"
+        task2.save()
+        #assert
+        self.assertEquals(u'lavar al perro y secarlo', Task.objects.all().last().text)
+    def test_edit_task_in_view(self):
+        #arrange
+        client = Client()
+        client.post('/submit-task',  {'text' : "lavar al perro"})
+        t_id =  Task.objects.all().last().id
         
+        #act
+        client.post('/edit-task', {'id' : t_id , 'text' : "lavar y secar al perro"})
+        task2 = client.get('/showtask')
+        #assert
+        self.assertContains(task2,"<td>&rarr; lavar y secar al perro </td>")
