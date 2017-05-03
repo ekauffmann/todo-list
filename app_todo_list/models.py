@@ -11,6 +11,9 @@ class Task(models.Model):
     state = models.IntegerField(default=0)
     priority = models.IntegerField(default=0, unique=True)
     
+    class Meta:
+        ordering = ['priority']
+    
     def save(self, *args, **kwargs):
         if self.priority == 0:
             max_priority = Task.objects.aggregate(models.Max('priority'))['priority__max']
