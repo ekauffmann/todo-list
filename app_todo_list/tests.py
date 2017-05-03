@@ -86,3 +86,28 @@ class TaskTest(TestCase):
         
         #assert
         self.assertContains(task2,"<td>&rarr; pasear al perro </td><td>1 </td>")
+    
+    def test_task_with_priority(self):
+        #arrange
+        task1 = Task(text="ello")
+        task1.save()
+        task2 = Task(text="eso")
+        task2.save()
+        #act
+        #no hay act
+        #assert
+        self.assertTrue(task1.is_before(task2))
+        
+    def test_show_priority(self):
+        #arrange
+        task = Task(text="centrifugar al perro")
+        task.save()
+        client = Client()
+        
+        #act
+        response = client.get("/showtask")
+        
+        #assert
+        self.assertContains(response, "pos: 1")
+        
+        
